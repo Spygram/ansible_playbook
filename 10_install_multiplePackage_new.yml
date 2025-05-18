@@ -1,0 +1,10 @@
+---
+- name: install multiple package
+  hosts: all
+  become: true
+
+  tasks:
+  - name: installing httpd, tree, make...
+    yum:
+     name: ['httpd', 'tree', 'make']
+     state: installed

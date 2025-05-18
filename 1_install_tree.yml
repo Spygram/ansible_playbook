@@ -1,0 +1,9 @@
+---
+- name: install tree
+  hosts: all
+  gather_facts: false
+  become: true
+  tasks:
+  - name: installing tree
+    yum:
+     name: tree

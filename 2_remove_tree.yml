@@ -1,0 +1,11 @@
+---
+- name: remove tree package
+  hosts: all
+  become: true
+  gather_facts: false
+
+  tasks:
+  - name: remove tree package...
+    yum:
+     name: tree
+     state: absent

@@ -1,0 +1,11 @@
+---
+- name: deleting directory
+  hosts: all
+  become: true
+  gather_facts: false
+
+  tasks:
+  - name: deleting directory..
+    file:
+     path: /home/ansadmin/ansdir
+     state: absent

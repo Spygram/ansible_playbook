@@ -1,0 +1,14 @@
+---
+- name: creating file
+  hosts: all
+  become: true
+  gather_facts: false
+
+  tasks:
+  - name: creating file
+    file:
+     path: /home/ansadmin/ansfile
+     state: touch
+     mode: 0755
+     owner: ansadmin
+     group: ansadmin
