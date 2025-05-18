@@ -1,0 +1,15 @@
+---
+- name: Install/Remove package based on loop
+  hosts: all
+  become: true
+  
+  tasks:
+  - name: Installing/Removing packages
+    yum: 
+     name: "{{ item.pkg }}"
+     state: "{{ item.action }}"
+    loop:
+     - { pkg: 'git', action: "installed" }
+     - { pkg: 'make', action: "latest" }
+     - { pkg: 'wget', action: "removed" }
+     - { pkg: 'git', action: "absent" }
