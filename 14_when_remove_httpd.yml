@@ -1,0 +1,25 @@
+---
+- name: Removing httpd on target systems..
+  hosts: all
+  become: true
+
+  tasks:
+  - name: Removing httpd on RedHat systems....
+    yum:
+     name: httpd
+     state: absent
+    when:
+     ansible_os_family == "RedHat"
+
+  - name: Removing httpd on Debian/Ubuntu systems....
+    apt:
+     name: apache2 # for ubuntu systems, package name is apache2. not httpd as in redhat systems
+     state: absent #for ubuntu systes, state 'installed' doesnot work, hence 'present' used
+    when:
+     ansible_os_family == "Debian"
+
+  
+  - name: Deleting html file....
+    file:
+     path: /var/www/html/index.html
+     state: absent

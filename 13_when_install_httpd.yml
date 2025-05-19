@@ -1,0 +1,38 @@
+---
+- name: Installing httpd on target systems..
+  hosts: all
+  become: true
+
+  tasks:
+  - name: Installing httpd on RedHat systems....
+    yum:
+     name: httpd
+     state: installed
+    when:
+     ansible_os_family == "RedHat"
+
+  - name: Installing httpd on Debian/Ubuntu systems....
+    apt:
+     name: apache2 # for ubuntu systems, package name is apache2. not httpd as in redhat systems
+     state: present #for ubuntu systes, state 'installed' doesnot work, hence 'present' used
+    when:
+     ansible_os_family == "Debian"
+
+  - name: Starting httpd on RedHat systems....
+    service:
+     name: httpd
+     state: started
+    when:
+     ansible_os_family == "RedHat"
+
+  - name: Starting httpd on Debian/Ubuntu systems....
+    service:
+     name: apache2
+     state: started
+    when:
+     ansible_os_family == "Debian"
+
+  - name: Copying html file....
+    copy:
+     src: /home/ansadmin/index.html
+     dest: /var/www/html

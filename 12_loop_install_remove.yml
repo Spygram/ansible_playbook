@@ -12,4 +12,4 @@
      - { pkg: 'git', action: "installed" }
      - { pkg: 'make', action: "latest" }
      - { pkg: 'wget', action: "removed" }
-     - { pkg: 'git', action: "absent" }
+     - { pkg: 'tree', action: "absent" }
