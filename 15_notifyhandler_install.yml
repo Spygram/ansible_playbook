@@ -1,0 +1,43 @@
+---
+- name: Installing httpd on target systems with notifier & handler
+  hosts: all
+  become: true
+
+  tasks:
+  - name: Installing httpd on RedHat systems....
+    yum:
+     name: httpd
+     state: installed
+    when:
+     ansible_os_family == "RedHat"
+    notify:
+    - start httpd service
+
+  - name: Installing httpd on Debian/Ubuntu systems....
+    apt:
+     name: apache2 # for ubuntu systems, package name is apache2. not httpd as in redhat systems
+     state: present #for ubuntu systes, state 'installed' doesnot work, hence 'present' used
+    when:
+     ansible_os_family == "Debian"
+    notify:
+    - start apache2 service
+
+  - name: Copying html file....
+    copy:
+     src: /home/ansadmin/index.html
+     dest: /var/www/html
+
+
+  handlers:
+  - name: start httpd service
+    service:
+     name: httpd
+     state: started
+    when:
+     ansible_os_family == "RedHat"
+  - name: start apache2 service
+    service:
+     name: apache2
+     state: started
+    when:
+     ansible_os_family == "Debian"

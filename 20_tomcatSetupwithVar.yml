@@ -1,0 +1,45 @@
+---
+- name: Tomcat Setup
+  hosts: all
+  become: true
+  vars:
+    tomcat_version: apache-tomcat-9.0.105
+
+  tasks:
+  - name: Install Java
+    yum:
+      name: java
+      state: installed
+
+  - name: Download Tomcat
+    get_url:
+      url: https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.105/bin/apache-tomcat-9.0.105.tar.gz
+      dest: /opt
+      mode: 0755
+ 
+  - name: Extract Tomcat
+    unarchive:
+      src: /opt/{{tomcat_version}}.tar.gz
+      dest: /opt/
+      remote_src: yes
+
+  - name: Change permission of tomcat directory
+    file:
+      path: /opt/{{tomcat_version}}
+      mode: '0755'
+      recurse: yes
+
+  - name: link file for tomcat startup.sh
+    file:
+      src: /opt/{{tomcat_version}}/bin/startup.sh
+      dest: /usr/local/bin/tomcatup
+      state: link
+
+  - name: link file for tomcat shutdown.sh
+    file:
+      src: /opt/{{tomcat_version}}/bin/shutdown.sh
+      dest: /usr/local/bin/tomcatdown
+      state: link
+
+  - name: Start Tomcat
+    command: nohup tomcatup

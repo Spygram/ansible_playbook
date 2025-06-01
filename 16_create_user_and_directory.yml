@@ -1,0 +1,17 @@
+---
+- name: creating user smith
+  hosts: all
+  become: true
+
+  tasks:
+  - name: creating user smith
+    user:
+     name: smith
+  
+  - name: createing directory for user smith
+    file:
+     path: /opt/smith_temp_dir
+     state: directory
+     owner: smith
+     group: smith
+     mode: 0755

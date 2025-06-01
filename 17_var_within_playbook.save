@@ -1,0 +1,11 @@
+---
+- name: creating user using variable
+  hosts: all
+  become: true
+  vars:
+   user_name: Ma  
+  tasks:
+  - name: create user martha
+    user:
+     name: Martha
+

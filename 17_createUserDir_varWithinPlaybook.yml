@@ -1,0 +1,18 @@
+---
+- name: create user and dir using variable within playbook
+  hosts: all
+  become: true
+  vars:
+   user_name: Martha
+
+  tasks:
+  - name: Creating user {{user_name}}
+    user:
+     name: "{{user_name}}"
+
+  - name: Creatiner user directory
+    file:
+     path: /opt/{{user_name}}_temp_dir
+     state: directory
+     owner: Martha
+     group: Martha
