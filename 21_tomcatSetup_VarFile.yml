@@ -1,0 +1,45 @@
+---
+- name: Tomcat Setup
+  hosts: all
+  become: true
+  vars_files:
+  - tomcat_vars
+    
+  tasks:
+  - name: Install Java
+    yum:
+      name: java
+      state: installed
+
+  - name: Download Tomcat
+    get_url:
+      url: "{{tomcat_url}}"
+      dest: /opt
+      mode: 0755
+
+  - name: Extract Tomcat
+    unarchive:
+      src: /opt/{{tomcat_ver}}.tar.gz
+      dest: /opt/
+      remote_src: yes
+
+  - name: Change permission of tomcat directory
+    file:
+      path: /opt/{{tomcat_ver}}
+      mode: '0755'
+      recurse: yes
+
+  - name: link file for tomcat startup.sh
+    file:
+      src: /opt/{{tomcat_ver}}/bin/startup.sh
+      dest: /usr/local/bin/tomcatup
+      state: link
+
+  - name: link file for tomcat shutdown.sh
+    file:
+      src: /opt/{{tomcat_ver}}/bin/shutdown.sh
+      dest: /usr/local/bin/tomcatdown
+      state: link
+
+  - name: Start Tomcat
+    command: nohup tomcatup
